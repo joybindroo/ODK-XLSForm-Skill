@@ -1,4 +1,4 @@
-# ODK Form Skills
+# ODK XLSForm Skill
 
 An agent-agnostic [Agent Skill](https://opencode.ai/docs/skills/) that turns any capable coding-agent CLI into a **Master ODK Programmer** — designing, validating, deploying, and analyzing [ODK](https://getodk.org/) XLSForms that are analysis-ready for **Python (Pandas)** and **SAS**.
 
