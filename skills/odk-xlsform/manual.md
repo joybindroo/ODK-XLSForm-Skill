@@ -30,6 +30,9 @@ Standardize "missing" or "non-applicable" values to simplify data cleaning:
     - Use standard ISO formats for Date/Time.
     - Use `1` for Yes and `0` for No (Boolean).
 
+### ODK docs lookups (when you can't figure it out)
+If you (the agent) cannot confidently determine ODK/XLSForm syntax, behavior, or a community pattern from this manual, `reference.md`, or your own training knowledge, consult the **`odk-docs` MCP server** at `https://odk-docs.mcp.kapa.ai` (HTTP transport; configure in your CLI — see the repo README). It indexes the official ODK documentation and the ODK forum. Ask **specific, narrow questions** — e.g. "How does the audit `audit-file` attribute work in XLSForm?" or "What are the valid appearance values for `select_multiple`?". Always confirm anything it returns by validating with `xls2xform`.
+
 ## 2. Validation Pipeline
 The validation process must follow this strict sequence:
 

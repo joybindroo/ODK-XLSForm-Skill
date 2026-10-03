@@ -52,9 +52,23 @@ Requires `pip install -r requirements.txt` (openpyxl, pandas, pyxform, pyodk) �
 
 **Read `manual.md` and `reference.md` before generating a nontrivial form** rather than working from this summary alone.
 
-## ODK docs lookups
+## ODK docs lookups (when you can't figure it out)
 
-For any ODK syntax or behavior not covered in `manual.md` / `reference.md`, query the **`odk-docs` MCP server** (HTTP endpoint `https://odk-docs.mcp.kapa.ai`) if your agent has it configured — it indexes the official ODK documentation and community forum. Configure it however your CLI registers MCP servers (see the repo README). Prefer it over guessing or general web search, and still confirm anything it returns with `xls2xform`.
+Use the **`odk-docs`** MCP server as a last resort for anything about ODK/XLSForm that **you (the agent) cannot confidently determine** from `manual.md`, `reference.md`, or your own training knowledge. It indexes the official ODK documentation and community forum, so it resolves ambiguity far better than guessing or general web search.
+
+- **Endpoint**: `https://odk-docs.mcp.kapa.ai` (HTTP transport). Configure it in your CLI per the repo README (`claude mcp add --transport http odk-docs …` or the `opencode.json` entry).
+- **When to reach for it**:
+  - You're unsure whether a syntax/attribute is valid for a question type or appearance.
+  - You don't recognize an XPath function/operator or can't recall its exact signature.
+  - A community-pattern question (e.g. "What's the accepted way to pre-load large choice lists on Central?") has no authoritative answer in the bundled docs.
+  - `xls2xform` rejects an expression and the reference doesn't explain why.
+- **How to query it effectively**: call it with the **specific, narrow question** — not a broad "how do I build an ODK form". Examples:
+  - `How does the audit audit-file attribute work in XLSForm?`
+  - `What are the valid appearance values for select_multiple?`
+  - `Can pulldata() reference a CSV file pulled from Central's media library?`
+- **Always confirm** anything it returns against your form with `xls2xform` before treating it as final.
+
+If the server isn't configured, fall back to general web search of `docs.getodk.org` and the ODK forum, then validate.
 
 ## Standing mandates
 
