@@ -31,8 +31,8 @@ Design → Validate → Deploy → Analyze
 
 `scripts/xlsform_generator.py` builds the `.xlsx`:
 
-- `extract_template_metadata(template_path)` — reads the column headers from `templates/odk_template.xlsx` so you know the exact schema before generating.
-- `generate_xlsform(output_path, survey_data, choices_data, settings_data, template_path=None)` — writes the workbook. `choices_data` accepts either the **advanced dict** form `{list_name: [{'name','label', ...filter_cols}, ...]}` (auto-derives filter columns for cascading selects) or a legacy flat list of rows.
+- `extract_template_metadata(template_path=None)` — reads the column headers from `templates/schema.json` so you know the exact schema before generating.
+- `generate_xlsform(output_path, survey_data, choices_data, settings_data, schema_path=None)` — writes the workbook. `choices_data` accepts either the **advanced dict** form `{list_name: [{'name','label', ...filter_cols}, ...]}` (auto-derives filter columns for cascading selects) or a legacy flat list of rows.
 
 Requires `pip install -r requirements.txt` (openpyxl, pandas, pyxform, pyodk) — `requirements.txt` sits in this skill directory, alongside `SKILL.md`.
 
@@ -46,8 +46,9 @@ Requires `pip install -r requirements.txt` (openpyxl, pandas, pyxform, pyodk) �
 | `reference.md` | Technical ODK reference — question types, operators/functions, cascading selects, audit logs, logic patterns, implementation pitfalls |
 | `requirements.txt` | Python deps (openpyxl, pandas, pyxform, pyodk) |
 | `scripts/xlsform_generator.py` | XLSForm generation engine |
-| `templates/odk_template.xlsx` | Base template (source of truth for column order) |
-| `templates/schema.json`, `templates/field_types.json` | Column schema and supported field types |
+| `templates/schema.json` | Column schema — source of truth for column order across survey, choices, settings, and entities sheets |
+| `templates/odk_template_reference.md` | Reference content extracted from the original template — field types, appearances, relevance, constraints, translations, list lookups, and additional columns |
+| `templates/field_types.json` | Supported field types |
 
 **Read `manual.md` and `reference.md` before generating a nontrivial form** rather than working from this summary alone.
 

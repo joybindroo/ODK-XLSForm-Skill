@@ -1,44 +1,46 @@
 import pandas as pd
 import openpyxl
-from openpyxl import load_workbook
 import os
 import json
 
-def extract_template_metadata(template_path):
+def extract_template_metadata(template_path=None):
     """
-    Extracts the column structures (headers) from the template to provide 
+    Extracts the column structures (headers) from the schema definition to provide
     the AI agent with a precise schema for form creation.
+
+    Args:
+        template_path (str, optional): Path to a JSON schema file. Defaults to
+            the bundled ``templates/schema.json``.
     """
+    if template_path is None:
+        template_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            'templates', 'schema.json'
+        )
+
     if not os.path.exists(template_path):
         return None
-    
+
     try:
-        wb = load_workbook(template_path, data_only=True)
-        metadata = {}
-        
-        target_sheets = ['survey', 'choices', 'settings', 'entities']
-        for sheet in target_sheets:
-            if sheet in wb.sheetnames:
-                ws = wb[sheet]
-                headers = [h for h in next(ws.iter_rows(min_row=1, max_row=1, values_only=True)) if h is not None]
-                metadata[sheet] = headers
-        return metadata
+        with open(template_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
     except Exception as e:
         print(f"Error extracting metadata: {e}")
         return None
 
-def generate_xlsform(output_path, survey_data, choices_data, settings_data, template_path=None):
+def generate_xlsform(output_path, survey_data, choices_data, settings_data, schema_path=None):
     """
     Generates a professional ODK XLSForm .xlsx file.
-    
+
     Args:
         output_path (str): Path to save the .xlsx file.
         survey_data (list): List of rows for the survey sheet.
-        choices_data (dict or list): 
+        choices_data (dict or list):
             - If dict: { 'list_name': [ { 'name': '...', 'label': '...', 'filter_col': 'val' }, ... ] }
             - If list: Standard list of rows including headers.
         settings_data (dict): Dictionary of settings.
-        template_path (str, optional): Path to a template.
+        schema_path (str, optional): Path to a JSON schema file. Currently unused;
+            schema defaults are baked into the generator logic below.
     """
     wb = openpyxl.Workbook()
     default_sheet = wb.active
