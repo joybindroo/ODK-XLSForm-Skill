@@ -25,6 +25,7 @@ Standardize "missing" or "non-applicable" values to simplify data cleaning:
 ### Technical Implementation
 - **Cascading Selects**: Implement hierarchies (e.g., District -> Block -> Village) by adding filter columns to the `choices` sheet and using `choice_filter` in the `survey` sheet.
 - **Formula Preservation**: When using Python to edit forms, use **XML Patching** (raw text replacement in `xl/worksheets/sheet1.xml`) to prevent libraries like `openpyxl` from stripping `${variable}` syntax in `concat()` or complex calculations.
+- **Bilingual Media Columns**: In multilingual forms (e.g. `label::English (en)` / `label::Hindi (hi)`), pyxform treats `image` as a translatable column and warns for each language lacking `image::<lang>`. The warning is cosmetic — the same image renders in every language — but the clean fix is to declare `image::English (en)` and `image::Hindi (hi)` columns and set both to the same filename. See `reference.md` §5D.
 - **Data Analysis Alignment**: 
     - Always use integers for `value` in the `choices` sheet.
     - Use standard ISO formats for Date/Time.

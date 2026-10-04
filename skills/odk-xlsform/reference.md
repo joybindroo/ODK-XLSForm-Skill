@@ -94,3 +94,17 @@ While pulldata() is powerful, moving small-to-medium lookup lists (like District
 
 ### C. Standardizing List Names
 To avoid 'List name not in choices sheet' errors during validation, ensure a strict naming convention for lists (e.g., always use district_list instead of mixing district and district_list). Use automated scripts to sanitize type columns across multiple forms to ensure consistency.
+
+### D. Bilingual Forms with an `image` Column (pyxform Warning)
+pyxform treats `image` as a translatable column: once a form declares language-qualified labels (e.g. `label::English (en)` / `label::Hindi (hi)`), it expects the media column to be language-tagged too and warns for each language that lacks `image::<lang>`.
+
+| Form | Media columns | Warning? |
+| :--- | :--- | :--- |
+| Bilingual | plain `image` | Yes — one per language lacking `image::<lang>` |
+| Bilingual | none | No |
+| Single-language | plain `image` | No |
+| Bilingual | `image::English (en)` + `image::Hindi (hi)` | No |
+
+The warning is purely cosmetic — the same image card shows in both languages and all `jr://images/...` references bind correctly.
+
+**Fix**: in any form using multiple languages with media image display, rename the schema column to `image::English (en)` and `image::Hindi (hi)` (one per declared language) and set both to the same filename.
